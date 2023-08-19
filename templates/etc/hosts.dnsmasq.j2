@@ -1,0 +1,5 @@
+{% if dnsmasq__addn_hosts is defined and dnsmasq__addn_hosts|length %}
+{% for host in dnsmasq__addn_hosts %}
+{{ host['address'] }} {{ host['name'] }}
+{% endfor %}
+{% endif %}

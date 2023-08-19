@@ -1,0 +1,22 @@
+---
+dnsmasq__packages:
+  - dnsmasq
+  - bind9-dnsutils
+
+dnsmasq__upstream_servers:
+  - 8.8.8.8
+  - 8.8.4.4
+
+dnsmasq__strict_order: true
+
+dnsmasq__dhcp_authoritative: true
+
+dnsmasq__dnssec: true
+
+dnsmasq__addn_hosts: []
+
+dnsmasq__cnames: []
+
+dnsmasq__dhcp_range: {}
+
+dnsmasq__dhcp_hosts: []

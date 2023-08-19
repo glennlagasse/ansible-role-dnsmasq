@@ -1,0 +1,38 @@
+---
+- name: 'Install DNSMasq and DNS utilities'
+  ansible.builtin.apt:
+    name: '{{ dnsmasq__packages }}'
+    state: 'present'
+    cache_valid_time: 3600
+    update_cache: true
+  become: true
+
+- name: 'Deploy DNSMasq static hosts configuration'
+  ansible.builtin.template:
+    src: 'etc/hosts.dnsmasq.j2'
+    dest: '/etc/hosts.dnsmasq'
+    mode: '0644'
+  become: true
+
+- name: 'Deploy DNSMasq configuration'
+  ansible.builtin.template:
+    src: 'etc/dnsmasq.d/custom.conf.j2'
+    dest: '/etc/dnsmasq.d/custom.conf'
+    mode: '0644'
+    validate: 'dnsmasq --test -C %s'
+  become: true
+  notify: 'Restart DNSMasq'
+
+- name: 'Enable and start DNSMasq service'
+  ansible.builtin.systemd_service:
+    name: 'dnsmasq'
+    enabled: true
+    state: 'started'
+  become: true
+
+# - name: 'Update /etc/resolv.conf'
+#   ansible.builtin.lineinfile:
+#     path: '/etc/resolv.conf'
+#     regexp: '^nameserver {{ ansible_default_ipv4.address }}'
+#     insertbefore: 'BOF'
+#     line: 'nameserver {{ ansible_default_ipv4.address }}'

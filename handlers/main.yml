@@ -1,0 +1,6 @@
+---
+- name: 'Restart DNSMasq'
+  ansible.builtin.systemd_service:
+    name: 'dnsmasq'
+    state: 'restarted'
+  become: true
